@@ -1,4 +1,4 @@
-# Very Large Bits SDK for .NET [![Build Status](https://travis-ci.org/verylargebits/sdk-dot-net?branch=master)](https://travis-ci.org/verylargebits/sdk-dot-net)
+# Very Large Bits SDK for .NET [![Build Status](https://travis-ci.org/verylargebits/sdk-dot-net.svg?branch=master)](https://travis-ci.org/verylargebits/sdk-dot-net)
 
 The **Very Large Bits SDK for .NET** enables .NET developers to easily work with [Very Large Bits][vlb] web services and build enterprise-grade video solutions. You can get started in minutes using ***NuGet*** or by downloading a [single zip file][install-sdk].
 
