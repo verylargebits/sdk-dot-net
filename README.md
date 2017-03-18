@@ -21,7 +21,15 @@ To run the SDK you will need **.NET 4.0**.
 
 #### Install the SDK ####
 
+Simply unzip the SDK to the folder or directory of your choice.
+
 The recommended way to use the Very Large Bits SDK for .NET in your project is to references it from NuGet.
+
+#### Install just the SDK Binaries
+
+Run the following command in the Package Manager Console:
+
+Install-Package VeryLargeBits.SDK
 
 ## Features
 
