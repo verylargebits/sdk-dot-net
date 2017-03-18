@@ -1,0 +1,13 @@
+Very Large Bits SDK for Java
+Copyright 2017 Very Large Bits LLC. All Rights Reserved.
+
+This product includes software developed by Very Large Bits LLC (https://verylargebits.com).
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+This software includes third party software subject to the following copyrights:
+- RSACryptoServiceProvider by Christian Etter (PKCS7.cs)
+- opensslkey by JavaScience Consulting,  Michel Gallant (PKCS8.cs)
+
+The licenses for these third party components are included in the source code.
