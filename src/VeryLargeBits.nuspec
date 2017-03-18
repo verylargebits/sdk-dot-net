@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>VeryLargeBits.SDK</id>
+        <version>1.0</version>
+        <authors>Very Large Bits</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Very Large Bits software development kit for the .NET Framework</description>
+        <language>en-US</language>
+        <projectUrl>https://github.com/verylargebits/sdk-dot-net</projectUrl>
+        <licenseUrl>https://raw.githubusercontent.com/verylargebits/sdk-dot-net/master/LICENSE.txt</licenseUrl>
+        <iconUrl>https://verylargebits.com/img/logo@1024px.png</iconUrl>
+        <releaseNotes>Initial release.</releaseNotes>
+        <copyright>Copyright 2017</copyright>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="net45" />
+            <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Data" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="net45" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="bin\Release\*.dll" target="lib" />
+    </files>
+</package>
