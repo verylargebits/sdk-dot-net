@@ -28,7 +28,7 @@ namespace VeryLargeBits.TemplateTool
     {
         static void PrintHelp()
         {
-            Console.WriteLine(@"Usage: vlb [OPTION]... [FILE]
+            Console.WriteLine(@"Usage: vlb [OPTION]...
 Adds and renders templates using the Very Large Bits system. Examples:
   vlb template.json
   vlb -v template.json
@@ -36,7 +36,7 @@ Adds and renders templates using the Very Large Bits system. Examples:
   vlba --key fyn615m07rbpfmydvk3re6wwgq --secret c:\\mykeyfile.pkcs8 template.json
 
 Also blocks until a specific status is reached. Example:
-  vlba -s DONE -r 6nnrqkpbffq8ke6y7rh6trccz5 vars.json
+  vlba -s DONE -r 6nnrqkpbffq8ke6y7rh6trccz5 -v vars.json
 
 Security OPTIONs when using API Key authentication:
   -k or --key      Override the app.config API key value.
@@ -47,14 +47,15 @@ Security OPTIONs when using basic API authentication:
   -p or --password Required if email is specificied.
 
 Template OPTIONs:
-  [FILE]           A JSON-formatted template file conforming to the Very Large Bits
+  -t or --template A JSON-formatted template file conforming to the Very Large Bits
                    standards.
 
 Render OPTIONs:
-  [FILE]           A JSON-formatted dictionary file which specifies
-                   variable-replacement operations, if any.
   -r or --render   The ID of the template to render with variable replacements or
-                   the ID of the render to check or wait upon for status.
+                   the ID of the render to check or wait upon for status. If this value
+                   is a file then it must be a JSON-formatted template file.
+  --vars           A JSON-formatted dictionary file which specifies
+                   variable-replacement operations, if any.
   -s or --status   Checks the status if none provided or waits until the
                    provided status is reached. Only valid value is DONE.
   -w or --wait     The number of seconds to wait if a status value is provided with -s.

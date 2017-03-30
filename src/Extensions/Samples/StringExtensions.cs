@@ -31,18 +31,6 @@ namespace VeryLargeBits.Extensions.Samples
             foreach (var tag in tags)
             {
                 var index = Array.IndexOf(args, tag);
-                if (0 <= index && index < args.Length - 2)
-                    return args[index + 1];
-            }
-
-            return null;
-        }
-
-        public static string ParseArgIncludingLast(this string[] args, params string[] tags)
-        {
-            foreach (var tag in tags)
-            {
-                var index = Array.IndexOf(args, tag);
                 if (0 <= index && index < args.Length - 1)
                     return args[index + 1];
             }
@@ -53,7 +41,7 @@ namespace VeryLargeBits.Extensions.Samples
         public static AssetStatus? ParseAssetStatusOrNull(this string instance)
         {
             if (null != instance && Enum.IsDefined(typeof(AssetStatus), instance))
-                return (AssetStatus)Enum.Parse(typeof(AssetStatus), instance);
+                return (AssetStatus)Enum.Parse(typeof(AssetStatus), instance, true);
             else
                 return null;
         }
@@ -61,7 +49,7 @@ namespace VeryLargeBits.Extensions.Samples
         public static TemplateStatus? ParseTemplateStatusOrNull(this string instance)
         {
             if (null != instance && Enum.IsDefined(typeof(TemplateStatus), instance))
-                return (TemplateStatus)Enum.Parse(typeof(TemplateStatus), instance);
+                return (TemplateStatus)Enum.Parse(typeof(TemplateStatus), instance, true);
             else
                 return null;
         }
@@ -69,7 +57,7 @@ namespace VeryLargeBits.Extensions.Samples
         public static RenderStatus? ParseRenderStatusOrNull(this string instance)
         {
             if (null != instance && Enum.IsDefined(typeof(RenderStatus), instance))
-                return (RenderStatus)Enum.Parse(typeof(RenderStatus), instance);
+                return (RenderStatus)Enum.Parse(typeof(RenderStatus), instance, true);
             else
                 return null;
         }

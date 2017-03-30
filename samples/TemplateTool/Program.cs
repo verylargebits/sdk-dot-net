@@ -33,7 +33,7 @@ namespace VeryLargeBits.TemplateTool
 {
     static partial class Program
     {
-        static string apiKey, email, filename, id, password, privateKeyFilename;
+        static string apiKey, email, id, password, privateKeyFilename, templateFilename, varsFilename;
         static bool help, status, verbose;
         static RenderStatus? statusValue;
         static DateTime started;
@@ -42,18 +42,21 @@ namespace VeryLargeBits.TemplateTool
 
         static void Main(string[] args)
         {
-            // Parse the arguments
-            apiKey = args.ParseArgIncludingLast("-k", "--key");
-            email = args.ParseArgIncludingLast("-e", "--email");
-            id = args.ParseArgIncludingLast("-r", "--render");
-            password = args.ParseArgIncludingLast("-p", "--password");
-            privateKeyFilename = args.ParseArgIncludingLast("-s", "--secret");
-            statusValue = args.ParseArgIncludingLast("-s", "--status").ParseRenderStatusOrNull();
+            // Parse program arguments
+            apiKey = args.ParseArg("-k", "--key");
+            email = args.ParseArg("-e", "--email");
+            id = args.ParseArg("-r", "--render");
+            password = args.ParseArg("-p", "--password");
+            privateKeyFilename = args.ParseArg("-s", "--secret");
             status = args.ParseBool("-s", "--status");
-            wait = args.ParseArgIncludingLast("-w", "--wait").ParseIntOrNull();
+            statusValue = args.ParseArg("-s", "--status").ParseRenderStatusOrNull();
+            templateFilename = !string.IsNullOrWhiteSpace(id) && File.Exists(id) ? id : args.ParseArg("-t", "--template");
+            varsFilename = args.ParseArg("--vars");
+            wait = args.ParseArg("-w", "--wait").ParseIntOrNull();
+
+            // Parse general arguments
             help = args.ParseBool("-h", "--help");
             verbose = args.ParseBool("-v", "--verbose");
-            filename = args.LastOrDefault();
 
             // Early-out with the help message if we have bad args
             if (help)
@@ -63,18 +66,32 @@ namespace VeryLargeBits.TemplateTool
             }
 
             // Create a service client to talk with Very Large Bits
-            if (string.IsNullOrWhiteSpace(email))
-                svc = string.IsNullOrWhiteSpace(privateKeyFilename) ? Client.Default(apiKey) : Client.FromPem8File(privateKeyFilename, apiKey);
-            else
-                svc = new Client(email, password);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                    svc = string.IsNullOrWhiteSpace(privateKeyFilename) ? Client.Default(apiKey) : Client.FromPem8File(privateKeyFilename, apiKey);
+                else
+                    svc = new Client(email, password);
+            }
+            catch
+            {
+                // Missing private key file
+                PrintHelp();
+                return;
+            }
 
             // Main logic starts here
-            if (string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(templateFilename) && string.IsNullOrWhiteSpace(id))
                 UploadTemplate();
-            else if (status && !statusValue.HasValue)
+            else if (string.IsNullOrWhiteSpace(templateFilename) && status && !statusValue.HasValue)
                 CheckRenderStatus();
-            else
+            else if (!string.IsNullOrWhiteSpace(id))
                 Render();
+            else
+            {
+                PrintHelp();
+                return;
+            }
 
             PrintGoodbye();
         }
@@ -86,18 +103,23 @@ namespace VeryLargeBits.TemplateTool
 
         static void Render()
         {
-            Render render = new Render();
-            render.Source = string.Format("TEMPLATE {0}", id);
+            if (!string.IsNullOrWhiteSpace(templateFilename))
+                id = svc.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(templateFilename), Template.TypeConverters));
 
-            if (!string.IsNullOrWhiteSpace(filename) && File.Exists(filename))
-                render.Variables = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText(filename));
+            var render = new Render()
+            {
+                Source = string.Format("TEMPLATE {0}", id),
+            };
+
+            if (!string.IsNullOrWhiteSpace(varsFilename))
+                render.Variables = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText(varsFilename));
 
             Console.WriteLine(svc.Render(render, statusValue, wait));
         }
 
         static void UploadTemplate()
         {
-            Console.WriteLine(svc.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(filename))));
+            Console.WriteLine(svc.Add(JsonConvert.DeserializeObject<Template>(File.ReadAllText(templateFilename), Template.TypeConverters)));
         }
     }
 }

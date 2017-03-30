@@ -20,35 +20,39 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization;
 
 namespace VeryLargeBits.Schema
 {
+    [DataContract,
+        JsonConverter(typeof(StringEnumConverter))]
     public enum AssetStatus
     {
         /// <summary>The hash provided with the initial asset POST does not
         /// match the calculated hash of the given patches.</summary>
-        [JsonProperty("BAD_HASH")]
+        [EnumMember(Value = "BAD_HASH")]
         BadHash,
 
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("ERROR")]
+        [EnumMember(Value = "ERROR")]
         Error,
 
         /// <summary>The asset is being hashed by Very Large Bits to match against
         /// the provided hash value.</summary>
-        [JsonProperty("HASHING")]
+        [EnumMember(Value = "HASHING")]
         Hashing,
 
         /// <summary>The asset is waiting for remaining data patches to be sent.</summary>
-        [JsonProperty("PATCHING")]
+        [EnumMember(Value = "PATCHING")]
         Patching,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("USABLE")]
+        [EnumMember(Value = "USABLE")]
         Usable,
         
         /// <summary>The asset is waiting for the first data patch to be sent.</summary>
-        [JsonProperty("WAITING")]
+        [EnumMember(Value = "WAITING")]
         Waiting,
     }
 }

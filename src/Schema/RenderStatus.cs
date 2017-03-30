@@ -20,41 +20,45 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization;
 
 namespace VeryLargeBits.Schema
 {
+    [DataContract,
+        JsonConverter(typeof(StringEnumConverter))]
     public enum RenderStatus
     {
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("ERROR")]
+        [EnumMember(Value = "ERROR")]
         Error,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("COLLECT_ERROR")]
+        [EnumMember(Value = "COLLECT_ERROR")]
         CollectError,
         
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("COLLECTING")]
+        [EnumMember(Value = "COLLECTING")]
         Collecting,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("DONE")]
+        [EnumMember(Value = "DONE")]
         Done,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("RENDERING")]
+        [EnumMember(Value = "RENDERING")]
         Rendering,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("TRANSCODING")]
+        [EnumMember(Value = "TRANSCODING")]
         Transcoding,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("TRANSCODE_STORAGE_ERROR")]
+        [EnumMember(Value = "TRANSCODE_STORAGE_ERROR")]
         TranscodeStorageError,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("WAITING")]
+        [EnumMember(Value = "WAITING")]
         Waiting,
     }
 }

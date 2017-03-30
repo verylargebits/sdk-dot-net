@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,7 +62,6 @@
     </Compile>
     <Compile Include="Schema\RenderStatus.cs" />
     <Compile Include="Schema\AssetStatus.cs" />
-    <Compile Include="Schema\Profile.cs" />
     <Compile Include="Schema\Progress.cs" />
     <Compile Include="Schema\Request.cs" />
     <Compile Include="Schema\Response.cs" />

@@ -20,115 +20,130 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace VeryLargeBits.Schema
 {
     public abstract class Request
     {
-        public class Http : UrlBase
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum ColorStandard
         {
-            public Http()
+            BT601,
+            BT709,
+        }
+
+        public class H264Profile : VideoProfile
+        {
+            public H264Profile()
             {
-                Type = "HTTP";
+                Type = "H264";
+            }
+        }
+
+        public class HevcProfile : VideoProfile
+        {
+            public HevcProfile()
+            {
+                Type = "HEVC";
+            }
+        }
+
+        public class GifProfile : VideoProfile
+        {
+            public GifProfile()
+            {
+                Type = "GIF";
+            }
+        }
+
+        public class JpegProfile : ProfileBase
+        {
+            public JpegProfile()
+            {
+                Type = "JPEG";
+                Quality = 0.8D;
             }
 
-            [JsonProperty("headers")]
-            public IDictionary<string, string> Headers { get; set; }
-
-            [JsonProperty("verb")]
-            public string Verb { get; set; }
+            [JsonProperty("quality")]
+            public double Quality { get; set; }
         }
 
-        public class Metered : StorageBase
-        {
-            public Metered()
-            {
-                Type = "METERED";
-            }
-
-            [JsonProperty("maxCount")]
-            public ulong? MaxCount { get; set; }
-
-            [JsonProperty("maxDays")]
-            public ulong? MaxDays { get; set; }
-
-            [JsonProperty("maxSpend")]
-            public string MaxSpend { get; set; }
-        }
-
-        public abstract class RetryBase : StorageBase
-        {
-            [JsonProperty("retryCount")]
-            public int RetryCount { get; set; }
-
-            [JsonProperty("retryDelay")]
-            public int RetryDelay { get; set; }
-        }
-
-        public class S3 : UrlBase
-        {
-            public S3()
-            {
-                Type = "S3";
-            }
-
-            [JsonProperty("password")]
-            public string password { get; set; }
-
-            [JsonProperty("username")]
-            public string Username { get; set; }
-        }
-
-        public abstract class StorageBase
+        public abstract class JsonTypeBase
         {
             [JsonProperty("type")]
             protected string Type;
         }
 
-        public class Transcode
+        public abstract class ProfileBase : JsonTypeBase
         {
-            [JsonProperty("endFrame")]
-            public int? EndFrame;
-
-            [JsonProperty("endSeconds")]
-            public double? endSeconds;
-
-            [JsonProperty("frameCount")]
-            public int? FrameCount;
-
-            [JsonProperty("height")]
-            public int? Height;
-
-            [JsonProperty("profile")]
-            public Profile Profile;
-
-            [JsonProperty("profileId")]
-            public string ProfileId;
-
-            [JsonProperty("startFrame")]
-            public int? StartFrame;
-
-            [JsonProperty("startSeconds")]
-            public double? StartSeconds;
-
-            [JsonProperty("totalSeconds")]
-            public double? TotalSeconds;
-
-            [JsonProperty("width")]
-            public int? Width;
         }
 
-        public abstract class UrlBase : RetryBase
+        protected class ProfileConverter : JsonConverter
         {
-            [JsonProperty("url")]
-            public string url { get; set; }
+            public override bool CanConvert(Type objectType)
+            {
+                return objectType == typeof(ProfileBase);
+            }
+
+            public override bool CanWrite
+            {
+                get { return false; }
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                var json = JObject.Load(reader);
+                switch (json["type"].Value<string>())
+                {
+                    case "H264":
+                        return json.ToObject<H264Profile>(serializer);
+
+                    case "HEVC":
+                        return json.ToObject<HevcProfile>(serializer);
+
+                    case "GIF":
+                        return json.ToObject<GifProfile>(serializer);
+
+                    case "JPEG":
+                        return json.ToObject<JpegProfile>(serializer);
+
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        [JsonProperty("storage")]
-        public StorageBase Storage { get; set; }
+        public abstract class VideoProfile : ProfileBase
+        {
+            [JsonProperty("bit_rate")]
+            public long BitRate { get; set; }
 
-        [JsonProperty("transcodes")]
-        public IEnumerable<Transcode> Transcodes { get; set; }
+            [JsonProperty("color")]
+            public ColorStandard? Color { get; set; }
+
+            [JsonProperty("const_bit_rate")]
+            public bool? ConstantBitRate { get; set; }
+
+            [JsonProperty("const_gop")]
+            public bool? ConstantGroupOfPictures { get; set; }
+
+            [JsonProperty("gop")]
+            public long? GroupOfPictures { get; set; }
+
+            [JsonProperty("max_b_frames")]
+            public long? MaxBFrames { get; set; }
+
+            [JsonProperty("pixel_aspect_ratio")]
+            public double? PixelAspectRatio { get; set; }
+        }
     }
 }

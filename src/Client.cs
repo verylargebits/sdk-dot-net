@@ -24,7 +24,9 @@ using JavaScience;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using VeryLargeBits.Extensions;
@@ -165,7 +167,7 @@ namespace VeryLargeBits
         static void AddHeaders(HttpWebRequest request, AssetStatus? waitUntil = null, int? waitFor = null)
         {
             if (null != waitUntil)
-                request.Headers[Headers.WaitUntil] = Enum.GetName(typeof(AssetStatus), waitUntil.Value);
+                request.Headers[Headers.WaitUntil] = GetEnumMemberValue(waitUntil.Value);
 
             if (null != waitFor)
                 request.Headers[Headers.WaitFor] = waitFor.ToString();
@@ -174,10 +176,18 @@ namespace VeryLargeBits
         static void AddHeaders(HttpWebRequest request, RenderStatus? waitUntil = null, int? waitFor = null)
         {
             if (null != waitUntil)
-                request.Headers[Headers.WaitUntil] = Enum.GetName(typeof(RenderStatus), waitUntil.Value);
+                request.Headers[Headers.WaitUntil] = GetEnumMemberValue(waitUntil.Value);
 
             if (null != waitFor)
                 request.Headers[Headers.WaitFor] = waitFor.ToString();
+        }
+
+        static string GetEnumMemberValue<T>(T instance)
+        {
+            var type = typeof(T);
+            var attr = type.GetMember(instance.ToString()).FirstOrDefault()?.GetCustomAttributes(false).OfType<EnumMemberAttribute>().FirstOrDefault();
+
+            return null == attr ? null : attr.Value;
         }
 
         static HttpWebRequest Create(string method, string relativeUrl)

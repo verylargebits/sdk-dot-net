@@ -20,33 +20,37 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Runtime.Serialization;
 
 namespace VeryLargeBits.Schema
 {
+    [DataContract,
+        JsonConverter(typeof(StringEnumConverter))]
     public enum TemplateStatus
     {
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("ERROR")]
+        [EnumMember(Value = "ERROR")]
         Error,
 
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("COLLECT_ERROR")]
+        [EnumMember(Value = "COLLECT_ERROR")]
         CollectError,
 
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("WAITING")]
+        [EnumMember(Value = "WAITING")]
         Waiting,
 
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("COLLECTING")]
+        [EnumMember(Value = "COLLECTING")]
         Collecting,
 
         /// <summary>Unexpected system error. Please contact support.</summary>
-        [JsonProperty("PROCESSING")]
+        [EnumMember(Value = "PROCESSING")]
         Processing,
 
         /// <summary>The asset is ready and usable for rendering purposes.</summary>
-        [JsonProperty("USABLE")]
+        [EnumMember(Value = "USABLE")]
         Usable,
     }
 }
