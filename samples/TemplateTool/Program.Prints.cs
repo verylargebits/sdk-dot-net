@@ -30,13 +30,12 @@ namespace VeryLargeBits.TemplateTool
         {
             Console.WriteLine(@"Usage: vlb [OPTION]...
 Adds and renders templates using the Very Large Bits system. Examples:
-  vlb template.json
-  vlb -v template.json
-  vlba --render 6nnrqkpbffq8ke6y7rh6trccz5 vars.json
-  vlba --key fyn615m07rbpfmydvk3re6wwgq --secret c:\\mykeyfile.pkcs8 template.json
+  vlb --template template.json
+  vlb --render 6nnrqkpbffq8ke6y7rh6trccz5 --vars vars.json
+  vlb --key fyn615m07rbpfmydvk3re6wwgq --secret c:\mykeyfile.pkcs8 --template template.json
 
 Also blocks until a specific status is reached. Example:
-  vlba -s DONE -r 6nnrqkpbffq8ke6y7rh6trccz5 -v vars.json
+  vlb -s DONE -r 6nnrqkpbffq8ke6y7rh6trccz5 -v vars.json
 
 Security OPTIONs when using API Key authentication:
   -k or --key      Override the app.config API key value.
