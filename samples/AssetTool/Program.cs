@@ -49,8 +49,8 @@ namespace VeryLargeBits.AssetTool
             password = args.ParseArg("-p", "--password");
             patchSize = (args.ParseArg("--patch-size") ?? "4MB").ParseByteSize();
             privateKeyFilename = args.ParseArg("-s", "--secret");
-            status = args.ParseBool("-s", "--status");
-            statusValue = args.ParseArg("-s", "--status").ParseAssetStatusOrNull();
+            status = args.ParseBool("--status");
+            statusValue = args.ParseArg("--status").ParseAssetStatusOrNull();
             wait = args.ParseArg("-w", "--wait").ParseIntOrNull();
             help = args.ParseBool("-h", "--help");
             verbose = args.ParseBool("-v", "--verbose");
@@ -86,7 +86,7 @@ namespace VeryLargeBits.AssetTool
             {
                 PrintComputingHash();
                 hash = sha1.ComputeHash(source);
-                patchCount = (int)Math.Max(1, Math.Ceiling((double)source.Length / patchSize));
+                patchCount = (int)Math.Max(0, Math.Ceiling((double)source.Length / patchSize) - 1);
                 PrintKeyOverrides();
             }
 
@@ -109,20 +109,17 @@ namespace VeryLargeBits.AssetTool
             };
 
             // Add a new asset with the first data patch
-            if (1 == patchCount)
-            {
-                asset.Data = File.ReadAllBytes(filename);
-                assetId = svc.Add(asset, statusValue, wait);
-                return;
-            }
-
             asset.Data = new byte[patchSize].ReadFilePatch(filename, patchSize, 0);
             assetId = svc.Add(asset);
             PrintFistPatch();
 
+            // Early-out if no patches
+            if (0 == patchCount)
+                return;
+
             // Multi-thread the data patches (except the first one which has already been sent)
             var tasks = new List<Task>();
-            for (var patchIndex = 1; patchIndex < patchCount; patchIndex++)
+            for (var patchIndex = 1; patchIndex <= patchCount; patchIndex++)
                 tasks.Add(Task.Factory.StartNew(delegate (object state)
                 {
                     var taskIndex = (int)state;

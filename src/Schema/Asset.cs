@@ -28,7 +28,7 @@ namespace VeryLargeBits.Schema
         [JsonProperty("hash")]
         public string Hash;
 
-        [JsonProperty("patchCount")]
+        [JsonProperty("patch_count")]
         public int PatchCount;
     }
 }

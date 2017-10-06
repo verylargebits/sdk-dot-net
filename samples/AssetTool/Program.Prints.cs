@@ -28,13 +28,13 @@ namespace VeryLargeBits.AssetTool
     {
         static void PrintHelp()
         {
-            Console.WriteLine(@"Usage: vlba [OPTION]... [FILE]...
+            Console.WriteLine(@"Usage: vlba [OPTION]... [FILE]
 Adds asset FILEs to the Very Large Bits system. Examples:
   vlba movie.mp4
   vlba -v movie.mp4
   vlba --patch-size 24000000 movie.mp4
   vlba --patch-size 24MB movie.mp4
-  vlba --key fyn615m07rbpfmydvk3re6wwgq --secret c:\\mykeyfile.pkcs8 movie.mp4
+  vlba --key fyn615m07rbpfmydvk3re6wwgq --secret c:\mykeyfile.pkcs8 movie.mp4
 
 Also blocks until a specific status is reached. Example:
   vlba -s USABLE movie.mp4
@@ -52,7 +52,7 @@ Data OPTIONs:
 
 Other OPTIONs:
   -h or --help     Print this message.
-  -s or --status   Checks the status if none provided or waits until the
+  --status         Checks the status if none provided or waits until the
                    provided status is reached. Only valid value is USABLE.
   -w or --wait     The number of seconds to wait if a status value is provided with -s.
                    Default is 600 (10 minutes).
