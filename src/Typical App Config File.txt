@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="VeryLargeBits.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+        <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="VeryLargeBits.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <VeryLargeBits.Properties.Settings>
+            <setting name="ApiKey" serializeAs="String">
+                <value>ynw0nkpbc4y28zn59r7xpe3zf1</value>
+            </setting>
+            <setting name="PrivateSigningKeyFilename" serializeAs="String">
+                <value>c:\Users\john\Downloads\ynw0nkpbc4y28zn59r7xpe3zf1.pkcs8</value>
+            </setting>
+        </VeryLargeBits.Properties.Settings>
+    </userSettings>
+    <applicationSettings>
+        <VeryLargeBits.Properties.Settings>
+            <setting name="ApiUrl" serializeAs="String">
+                <value>https://api.verylargebits.com</value>
+            </setting>
+        </VeryLargeBits.Properties.Settings>
+    </applicationSettings>
+</configuration>
